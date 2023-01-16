@@ -1,16 +1,31 @@
-# Generate JKS KeyStore Using KeyTool and Export Certificate from KeyStore
+# Generate jks keystore using keytool and export certificate from keystore
 - keytool -genkeypair -alias myPrivateKey -keypass changeit -keyalg RSA -keysize 2048 -validity 3650 -dname "CN=John Smith, OU=Development, O=Standard Supplies Inc., L=Anytown, S=North Carolina, C=US" -keystore mykeystore.jks -storepass changeit -storetype JKS -v
 - keytool -export -keystore mykeystore.jks -storetype JKS -storepass changeit -alias myPrivateKey -rfc -file certificate.pem
 
 # Export cert and private key from jks keystore
-- keytool -importkeystore -srckeystore mykeystore.jks -destkeystore mykeystore.p12 -deststoretype PKCS12
-- openssl pkcs12 -in mykeystore.p12 -nokeys -out server.cer.pem
-- openssl pkcs12 -in mykeystore.p12 -nodes -nocerts -out server.key.pem
+- keytool -importkeystore -srckeystore mykeystore.jks -srcalias myPrivateKey -srcstorepass changeit -srckeypass changeit -destkeystore mykeystore.p12 -destalias myPrivateKey -deststorepass changeit -destkeypass changeit -deststoretype PKCS12
+- openssl pkcs12 -in mykeystore.p12 -nokeys -out server.cert.pem -passin pass:changeit
+- openssl pkcs12 -in mykeystore.p12 -nodes -nocerts -out server.key.pem -passin pass:changeit
 
 # Extracting SSH keys from a Java keystore (jks) file
-## Convert keystore from jks to pkcs12 forma
+## Convert keystore from jks to pkcs12 format
 - keytool -importkeystore -srckeystore mykeystore.jks -srcalias myPrivateKey -srcstorepass changeit -srckeypass changeit -destkeystore mykeystore.p12 -destalias myPrivateKey -deststorepass changeit -destkeypass changeit -deststoretype PKCS12
-## Extract private key & cert from pkcs12 keystore:
+## Method 1
+### Extract private key(Encrypted) & cert from pkcs12 keystore:
 - openssl pkcs12 -in mykeystore.p12 -out server.key-cert.pem -passin pass:changeit -passout pass:changeit
-## Extract public key in ssh format:
+### Extract public key in ssh format:
 - ssh-keygen -P changeit -y -f server.key-cert.pem > my-sshkey.pub
+### TODO: Prepare private key in ssh format from server.key-cert.pem
+## Method 2
+### Extract private key from pkcs12 keystore:
+- openssl pkcs12 -in mykeystore.p12 -nodes -nocerts -out server.key.pem -passin pass:changeit
+### Extract public key in ssh format:
+- ssh-keygen -y -f server.key.pem > my-sshkey.pub
+### TODO: Prepare private key in ssh format from server.key.pem
+
+# Test sftp by curl
+## curl -v -k -u <username>: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub sftp://<remote_host>/<remote_path>
+- curl -v -k -u <username>: --key ./my-sshkey --pubkey ./my-sshkey.pub sftp://localhost:2222/upload/
+## sftp -i ~/.ssh/id_rsa <username>@<remote_host>
+- sftp -i ./my-sshkey my@localhost:2222
+- ls /home/sftp-user/upload
