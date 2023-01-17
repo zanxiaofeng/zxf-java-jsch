@@ -20,10 +20,12 @@
 - mv ./server.key-cert.pem ./my-sshkey
 ## Method 2
 ### Extract private key from pkcs12 keystore:
-- openssl pkcs12 -in mykeystore.p12 -nodes -nocerts -out server.key.pem -passin pass:changeit
+- openssl pkcs12 -in mykeystore.p12 -passin pass:changeit -nodes -nocerts -out server.key.pem
+### Transfer OpenSSH Private key to RSA Private Key in place
+- ssh-keygen -p -P changeit -N "" -m pem -f ./server.key.pem
+- mv ./server.key.pem ./my-sshkey
 ### Extract public key in ssh format:
-- ssh-keygen -y -f server.key.pem > my-sshkey.pub
-### TODO: Prepare private key in ssh format from server.key.pem
+- ssh-keygen -y -f ./my-sshkey > my-sshkey.pub
 
 # Test sftp by curl
 ## curl -v -k -u <username>: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub sftp://<remote_host>/<remote_path>
