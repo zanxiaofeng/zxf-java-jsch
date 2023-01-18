@@ -6,8 +6,7 @@ import com.jcraft.jsch.Logger;
 import com.jcraft.jsch.Session;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class JschFactory {
     static {
@@ -24,11 +23,23 @@ public class JschFactory {
         });
     }
 
-    public static Session createSession(String username, String host, int port) throws JSchException, IOException {
+    public static Session createSession(String username, String passwd, String host, int port) throws JSchException, IOException {
         JSch jSch = new JSch();
-        jSch.addIdentity(new String(Files.readAllBytes(Paths.get("./src/main/resources/keystore/my-sshkey"))));
+        Session session = jSch.getSession(username, host, port);
+        session.setPassword(passwd);
+        session.setConfig("StrictHostKeyChecking", "no");
+        session.setConfig("PreferredAuthentications", "password");
+        session.setTimeout(3000);
+        session.connect();
+        return session;
+    }
+
+    public static Session createSession(String username, Path identity, String host, int port) throws JSchException, IOException {
+        JSch jSch = new JSch();
+        jSch.addIdentity(identity.toString());
         Session session = jSch.getSession(username, host, port);
         session.setConfig("StrictHostKeyChecking", "no");
+        session.setConfig("PreferredAuthentications", "publickey");
         session.setTimeout(3000);
         session.connect();
         return session;

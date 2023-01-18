@@ -27,9 +27,14 @@
 ### Extract public key in ssh format:
 - ssh-keygen -y -f ./my-sshkey > my-sshkey.pub
 
-# Test sftp by curl
-## curl -v -k -u <username>: --key ~/.ssh/id_rsa --pubkey ~/.ssh/id_rsa.pub sftp://<remote_host>/<remote_path>
-- curl -v -k -u <username>: --key ./my-sshkey --pubkey ./my-sshkey.pub sftp://localhost:2222/upload/
-## sftp -i ~/.ssh/id_rsa <username>@<remote_host>
-- sftp -i ./my-sshkey my@localhost:2222
-- ls /home/sftp-user/upload
+# Test sftp by username/password
+## sftp -v -P <port> <username>@<remote_host>
+- sftp -v -P 2222 sftp-user@localhost
+- ls /upload
+
+# Test sftp by username/identity
+## curl -v -k -u <username>: --key ~/.ssh/id_rsa sftp://<remote_host>/<remote_path>
+- curl -v -k -u sftp-user: --key ./my-sshkey sftp://localhost:2222/upload/
+## sftp -v -i ~/.ssh/id_rsa -P <port> <username>@<remote_host>
+- sftp -v -i ./my-sshkey -P 2222 sftp-user@localhost
+- ls /upload

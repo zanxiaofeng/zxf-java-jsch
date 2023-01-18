@@ -3,7 +3,8 @@ services:
   sftp:
     image: atmoz/sftp
     volumes:
-      - ./src:/home/sftp-user/upload
+      - ./upload:/home/sftp-user/upload
+      - ../src/main/resources/keystore/my-sshkey.pub:/home/sftp-user/.ssh/keys/my-sshkey.pub:ro
     ports:
       - "2222:22"
     command: sftp-user:passwd:::upload
