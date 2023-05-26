@@ -8,7 +8,7 @@ import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-public class ShellTest {
+public class ShellTests {
     public static void main(String[] args) throws JSchException, IOException, SftpException, InterruptedException {
         testUsernameAndPassword();
         testUsernameAndIdentity();

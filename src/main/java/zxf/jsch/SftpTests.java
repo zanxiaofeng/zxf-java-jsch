@@ -8,7 +8,7 @@ import com.jcraft.jsch.SftpException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class SftpTest {
+public class SftpTests {
     public static void main(String[] args) throws JSchException, IOException, SftpException {
         testUsernameAndPassword();
         testUsernameAndIdentity();
