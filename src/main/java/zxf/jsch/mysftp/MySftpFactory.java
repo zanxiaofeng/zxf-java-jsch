@@ -18,30 +18,36 @@ public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
 
     @Override
     public MySftp create() throws Exception {
+        System.out.println("MySftpFactory::create");
         ChannelSftp channelSftp = (ChannelSftp) sessionManager.getSession().openChannel("sftp");
+        System.out.println("MySftpFactory::create.connect");
         channelSftp.connect();
         return new MySftp(channelSftp);
     }
 
     @Override
     public PooledObject<MySftp> wrap(MySftp mySftp) {
+        System.out.println("MySftpFactory::wrap");
         return new DefaultPooledObject<>(mySftp);
     }
 
     @Override
     public void destroyObject(PooledObject<MySftp> pooledObject) throws Exception {
+        System.out.println("MySftpFactory::destroyObject");
         MySftp mySftp = pooledObject.getObject();
         mySftp.disconnect();
     }
 
     @Override
     public boolean validateObject(PooledObject<MySftp> pooledObject) {
+        System.out.println("MySftpFactory::validateObject");
         MySftp mySftp = pooledObject.getObject();
         return mySftp.isConnected();
     }
 
     @Override
     public void passivateObject(PooledObject<MySftp> pooledObject) throws Exception {
+        System.out.println("MySftpFactory::passivateObject");
         MySftp mySftp = pooledObject.getObject();
         try {
             mySftp.cd(mySftp.getHome());

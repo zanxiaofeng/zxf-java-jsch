@@ -24,7 +24,7 @@ public class MySftp {
     public void disconnect() {
         if (channelSftp.isConnected()) {
             channelSftp.disconnect();
-            System.out.println("Closing");
+            System.out.println("MySftp::disconnect");
         }
     }
 
