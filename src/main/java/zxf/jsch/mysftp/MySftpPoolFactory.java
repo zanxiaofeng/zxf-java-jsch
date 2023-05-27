@@ -14,7 +14,7 @@ public class MySftpPoolFactory {
         PooledObjectFactory<MySftp> mySftpPooledObjectFactory = PoolUtils.synchronizedPooledFactory(new MySftpFactory(sessionFactory));
         GenericObjectPoolConfig<MySftp> config = new GenericObjectPoolConfig<>();
         config.setMaxTotal(10);
-        config.setMinIdle(1);
+        config.setMinIdle(2);
         config.setMaxWaitMillis(30 * 1000);
         config.setTestOnBorrow(true);
         config.setTestWhileIdle(true);

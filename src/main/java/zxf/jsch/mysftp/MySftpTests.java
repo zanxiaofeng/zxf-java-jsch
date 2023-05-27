@@ -10,8 +10,10 @@ public class MySftpTests {
 
         MySftp mySftp1 = mySftpPool.borrowObject();
         try {
+            System.out.println("111~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             mySftp1.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
+            ex.printStackTrace();
             mySftpPool.invalidateObject(mySftp1);
             mySftp1 = null;
         } finally {
@@ -22,16 +24,24 @@ public class MySftpTests {
 
         MySftp mySftp2 = mySftpPool.borrowObject();
         try {
-            mySftp2.ls("/").forEach(System.out::println);
+            System.out.println("222~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            mySftp2.ls(".").forEach(System.out::println);
+            System.out.println("############################");
+            mySftp2.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
+            ex.printStackTrace();
             mySftpPool.invalidateObject(mySftp2);
             mySftp2 = null;
         }
 
         MySftp mySftp3 = mySftpPool.borrowObject();
         try {
+            System.out.println("333~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            mySftp3.ls(".").forEach(System.out::println);
+            System.out.println("############################");
             mySftp3.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
+            ex.printStackTrace();
             mySftpPool.invalidateObject(mySftp3);
             mySftp3 = null;
         }
@@ -45,6 +55,6 @@ public class MySftpTests {
         }
 
         mySftpPool.close();
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }

@@ -25,6 +25,13 @@ public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
     }
 
     @Override
+    public boolean validateObject(PooledObject<MySftp> pooledObject) {
+        System.out.println("MySftpFactory::validateObject");
+        MySftp mySftp = pooledObject.getObject();
+        return mySftp.isConnected();
+    }
+
+    @Override
     public PooledObject<MySftp> wrap(MySftp mySftp) {
         System.out.println("MySftpFactory::wrap");
         return new DefaultPooledObject<>(mySftp);
@@ -35,24 +42,5 @@ public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
         System.out.println("MySftpFactory::destroyObject");
         MySftp mySftp = pooledObject.getObject();
         mySftp.disconnect();
-    }
-
-    @Override
-    public boolean validateObject(PooledObject<MySftp> pooledObject) {
-        System.out.println("MySftpFactory::validateObject");
-        MySftp mySftp = pooledObject.getObject();
-        return mySftp.isConnected();
-    }
-
-    @Override
-    public void passivateObject(PooledObject<MySftp> pooledObject) throws Exception {
-        System.out.println("MySftpFactory::passivateObject");
-        MySftp mySftp = pooledObject.getObject();
-        try {
-            mySftp.cd(mySftp.getHome());
-        } catch (SftpException ex) {
-            log.error("Could not reset channel to home folder, closing it", ex);
-            mySftp.disconnect();
-        }
     }
 }

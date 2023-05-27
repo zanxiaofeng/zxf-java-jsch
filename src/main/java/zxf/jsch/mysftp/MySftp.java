@@ -32,7 +32,6 @@ public class MySftp {
         }
     }
 
-
     public void disconnect() {
         System.out.println("MySftp::disconnect");
         if (session.isConnected()) {
@@ -44,18 +43,9 @@ public class MySftp {
         return session.isConnected();
     }
 
-    public String getHome() throws SftpException, JSchException {
-        ChannelSftp channelSftp = this.makeChannelSftp();
-        try {
-            return channelSftp.getHome();
-        } finally {
-            channelSftp.disconnect();
-        }
-    }
-
     private ChannelSftp makeChannelSftp() throws JSchException {
+        System.out.println("MySftp::makeChannelSftp");
         ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
-        System.out.println("MySftp::connect");
         channelSftp.connect();
         return channelSftp;
     }
