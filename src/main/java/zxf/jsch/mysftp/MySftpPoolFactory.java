@@ -1,6 +1,5 @@
 package zxf.jsch.mysftp;
 
-import com.jcraft.jsch.JSchException;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.PoolUtils;
 import org.apache.commons.pool2.PooledObjectFactory;
