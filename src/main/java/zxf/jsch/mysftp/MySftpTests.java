@@ -1,27 +1,12 @@
 package zxf.jsch.mysftp;
 
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Logger;
-import com.pastdev.jsch.SessionManager;
 import org.apache.commons.pool2.ObjectPool;
 
 import java.nio.file.Paths;
 
 public class MySftpTests {
     public static void main(String[] args) throws Exception {
-        SessionManager sessionManager = MySftpPoolFactory.createSessionManager("sftp-user", Paths.get("./src/main/resources/keystore/my-sshkey"), "localhost", 2222);
-        ObjectPool<MySftp> mySftpPool = MySftpPoolFactory.createPool(sessionManager);
-        JSch.setLogger(new Logger() {
-            @Override
-            public boolean isEnabled(int i) {
-                return true;
-            }
-
-            @Override
-            public void log(int i, String s) {
-                System.out.println("jsch:: " + s);
-            }
-        });
+        ObjectPool<MySftp> mySftpPool = MySftpPoolFactory.createPool("sftp-user", Paths.get("./src/main/resources/keystore/my-sshkey"), "localhost", 2222);
 
         MySftp mySftp1 = mySftpPool.borrowObject();
         try {
@@ -40,6 +25,7 @@ public class MySftpTests {
             mySftp2.ls("/").forEach(System.out::println);
         } catch (Exception ex) {
             mySftpPool.invalidateObject(mySftp2);
+            mySftp2 = null;
         }
 
         MySftp mySftp3 = mySftpPool.borrowObject();
@@ -47,9 +33,18 @@ public class MySftpTests {
             mySftp3.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             mySftpPool.invalidateObject(mySftp3);
+            mySftp3 = null;
+        }
+
+        if (mySftp2 != null) {
+            mySftpPool.returnObject(mySftp2);
+        }
+
+        if (mySftp3 != null) {
+            mySftpPool.returnObject(mySftp3);
         }
 
         mySftpPool.close();
-        sessionManager.close();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }

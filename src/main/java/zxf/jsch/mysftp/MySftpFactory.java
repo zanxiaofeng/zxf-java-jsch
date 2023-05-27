@@ -1,8 +1,7 @@
 package zxf.jsch.mysftp;
 
-import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import com.pastdev.jsch.SessionManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
@@ -10,19 +9,19 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 
 @Slf4j
 public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
-    private SessionManager sessionManager;
+    private SessionFactory sessionFactory;
 
-    public MySftpFactory(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
+    public MySftpFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public MySftp create() throws Exception {
         System.out.println("MySftpFactory::create");
-        ChannelSftp channelSftp = (ChannelSftp) sessionManager.getSession().openChannel("sftp");
+        Session session = sessionFactory.createSession();
         System.out.println("MySftpFactory::create.connect");
-        channelSftp.connect();
-        return new MySftp(channelSftp);
+        session.connect();
+        return new MySftp(session);
     }
 
     @Override
