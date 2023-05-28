@@ -1,13 +1,10 @@
 package zxf.jsch.mysftp;
 
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
-@Slf4j
 public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
     private SessionFactory sessionFactory;
 
@@ -17,29 +14,29 @@ public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
 
     @Override
     public MySftp create() throws Exception {
-        System.out.println("MySftpFactory::create");
+        System.out.println(Thread.currentThread() + " MySftpFactory::create");
         Session session = sessionFactory.createSession();
-        System.out.println("MySftpFactory::create.connect");
+        System.out.println(Thread.currentThread() + " MySftpFactory::create.connect");
         session.connect();
         return new MySftp(session);
     }
 
     @Override
     public boolean validateObject(PooledObject<MySftp> pooledObject) {
-        System.out.println("MySftpFactory::validateObject");
+        System.out.println(Thread.currentThread() + " MySftpFactory::validateObject");
         MySftp mySftp = pooledObject.getObject();
         return mySftp.isConnected();
     }
 
     @Override
     public PooledObject<MySftp> wrap(MySftp mySftp) {
-        System.out.println("MySftpFactory::wrap");
+        System.out.println(Thread.currentThread() + " MySftpFactory::wrap");
         return new DefaultPooledObject<>(mySftp);
     }
 
     @Override
     public void destroyObject(PooledObject<MySftp> pooledObject) throws Exception {
-        System.out.println("MySftpFactory::destroyObject");
+        System.out.println(Thread.currentThread() + " MySftpFactory::destroyObject");
         MySftp mySftp = pooledObject.getObject();
         mySftp.disconnect();
     }

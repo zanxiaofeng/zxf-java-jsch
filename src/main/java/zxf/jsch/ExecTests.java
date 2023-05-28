@@ -12,7 +12,7 @@ public class ExecTests {
     }
 
     private static void testUsernameAndPassword() throws JSchException, IOException, SftpException, InterruptedException {
-        System.out.println("*****************************testUsernameAndPassword*****************************");
+        System.out.println(Thread.currentThread() + " *****************************testUsernameAndPassword*****************************");
         Session session = JschFactory.createSession("sftp-user", "passwd", "localhost", 2222);
         ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
         channelExec.setOutputStream(System.out, true);
@@ -24,7 +24,7 @@ public class ExecTests {
     }
 
     private static void testUsernameAndIdentity() throws JSchException, IOException, SftpException, InterruptedException {
-        System.out.println("*****************************testUsernameAndIdentity*****************************");
+        System.out.println(Thread.currentThread() + " *****************************testUsernameAndIdentity*****************************");
         Session session = JschFactory.createSession("sftp-user", Paths.get("./src/main/resources/keystore/my-sshkey"), "localhost", 2222);
         ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
         channelExec.setOutputStream(System.out, true);

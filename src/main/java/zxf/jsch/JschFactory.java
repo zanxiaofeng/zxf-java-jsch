@@ -18,12 +18,13 @@ public class JschFactory {
 
             @Override
             public void log(int i, String s) {
-                System.out.println("jsch:: " + s);
+                System.out.println(Thread.currentThread() + " jsch:: " + s);
             }
         });
     }
 
     public static Session createSession(String username, String passwd, String host, int port) throws JSchException, IOException {
+        System.out.println(Thread.currentThread() + " JschFactory::createSession");
         JSch jSch = new JSch();
         Session session = jSch.getSession(username, host, port);
         session.setPassword(passwd);
@@ -35,6 +36,7 @@ public class JschFactory {
     }
 
     public static Session createSession(String username, Path identity, String host, int port) throws JSchException, IOException {
+        System.out.println(Thread.currentThread() + " JschFactory::createSession");
         JSch jSch = new JSch();
         jSch.addIdentity(identity.toString());
         Session session = jSch.getSession(username, host, port);

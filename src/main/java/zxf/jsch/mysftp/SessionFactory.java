@@ -19,7 +19,7 @@ public class SessionFactory {
 
             @Override
             public void log(int i, String s) {
-                System.out.println("jsch:: " + s);
+                System.out.println(Thread.currentThread() + " jsch:: " + s);
             }
         });
     }
@@ -30,6 +30,7 @@ public class SessionFactory {
     private int port;
 
     public Session createSession() throws JSchException {
+        System.out.println(Thread.currentThread() + " SessionFactory::createSession");
         JSch jSch = new JSch();
         jSch.addIdentity(identity.toString());
         Session session = jSch.getSession(username, host, port);

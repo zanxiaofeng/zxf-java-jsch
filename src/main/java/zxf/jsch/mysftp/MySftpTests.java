@@ -10,7 +10,7 @@ public class MySftpTests {
 
         MySftp mySftp1 = mySftpPool.borrowObject();
         try {
-            System.out.println("111~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println(Thread.currentThread() + " 111~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             mySftp1.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -24,9 +24,9 @@ public class MySftpTests {
 
         MySftp mySftp2 = mySftpPool.borrowObject();
         try {
-            System.out.println("222~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println(Thread.currentThread() + " 222~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             mySftp2.ls(".").forEach(System.out::println);
-            System.out.println("############################");
+            System.out.println(Thread.currentThread() + " ############################");
             mySftp2.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -36,9 +36,9 @@ public class MySftpTests {
 
         MySftp mySftp3 = mySftpPool.borrowObject();
         try {
-            System.out.println("333~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println(Thread.currentThread() + " 333~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             mySftp3.ls(".").forEach(System.out::println);
-            System.out.println("############################");
+            System.out.println(Thread.currentThread() + " ############################");
             mySftp3.ls("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -55,6 +55,6 @@ public class MySftpTests {
         }
 
         mySftpPool.close();
-        System.out.println("---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println(Thread.currentThread() + " ---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }

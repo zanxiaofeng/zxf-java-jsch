@@ -33,7 +33,7 @@ public class MySftp {
     }
 
     public void disconnect() {
-        System.out.println("MySftp::disconnect");
+        System.out.println(Thread.currentThread() + " MySftp::disconnect");
         if (session.isConnected()) {
             session.disconnect();
         }
@@ -44,7 +44,7 @@ public class MySftp {
     }
 
     private ChannelSftp makeChannelSftp() throws JSchException {
-        System.out.println("MySftp::makeChannelSftp");
+        System.out.println(Thread.currentThread() + " MySftp::makeChannelSftp");
         ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
         channelSftp.connect();
         return channelSftp;

@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 public class MySftpPoolFactory {
     public static ObjectPool<MySftp> createPool(String username, Path identity, String host, int port) {
+        System.out.println(Thread.currentThread() + " MySftpPoolFactory::createPool");
         SessionFactory sessionFactory = new SessionFactory(username, identity, host, port);
         PooledObjectFactory<MySftp> mySftpPooledObjectFactory = PoolUtils.synchronizedPooledFactory(new MySftpFactory(sessionFactory));
         GenericObjectPoolConfig<MySftp> config = new GenericObjectPoolConfig<>();
