@@ -36,6 +36,7 @@ public class SessionFactory {
         Session session = jSch.getSession(username, host, port);
         session.setConfig("StrictHostKeyChecking", "no");
         session.setConfig("PreferredAuthentications", "publickey");
+        session.setServerAliveInterval(120);
         session.setTimeout(3000);
         return session;
     }

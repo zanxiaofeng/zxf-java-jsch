@@ -30,6 +30,7 @@ public class JschFactory {
         session.setPassword(passwd);
         session.setConfig("StrictHostKeyChecking", "no");
         session.setConfig("PreferredAuthentications", "password");
+        session.setServerAliveInterval(120);
         session.setTimeout(3000);
         session.connect();
         return session;
@@ -42,6 +43,7 @@ public class JschFactory {
         Session session = jSch.getSession(username, host, port);
         session.setConfig("StrictHostKeyChecking", "no");
         session.setConfig("PreferredAuthentications", "publickey");
+        session.setServerAliveInterval(120);
         session.setTimeout(3000);
         session.connect();
         return session;
