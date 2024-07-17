@@ -7,6 +7,8 @@ import com.jcraft.jsch.SftpException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Vector;
 
 @Data
@@ -27,6 +29,35 @@ public class MySftp {
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
             return channelSftp.ls(path);
+        } finally {
+            channelSftp.disconnect();
+        }
+    }
+
+    public void createFolder(String folder) throws SftpException, JSchException {
+        ChannelSftp channelSftp = this.makeChannelSftp();
+        try {
+            channelSftp.mkdir(folder);
+        } finally {
+            channelSftp.disconnect();
+        }
+    }
+
+    public void upload(String dst, byte[] content) throws SftpException, JSchException {
+        ChannelSftp channelSftp = this.makeChannelSftp();
+        try {
+            channelSftp.put(new ByteArrayInputStream(content), dst);
+        } finally {
+            channelSftp.disconnect();
+        }
+    }
+
+    public byte[] download(String src) throws SftpException, JSchException {
+        ChannelSftp channelSftp = this.makeChannelSftp();
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            channelSftp.get(src, outputStream);
+            return outputStream.toByteArray();
         } finally {
             channelSftp.disconnect();
         }

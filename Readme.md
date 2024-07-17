@@ -4,6 +4,21 @@
 - keyboard-interactive
 - gss-api-with-mic
 
+# Core Classes
+- com.jcraft.jsch.JSch
+- com.jcraft.jsch.ChannelSftp;
+- com.jcraft.jsch.ChannelExec
+- com.jcraft.jsch.ChannelShell
+- com.jcraft.jsch.JSchException;
+- com.jcraft.jsch.Session;
+- com.jcraft.jsch.SftpException;
+- com.jcraft.jsch.Logger;
+- com.jcraft.jsch.HostKey
+- com.jcraft.jsch.HostKeyRepository
+- com.jcraft.jsch.KnownHosts
+- com.jcraft.jsch.ConfigRepository
+- com.jcraft.jsch.OpenSSHConfig
+
 # SSH Keep Alive
 ## Server side(/etc/ssh/sshd_config)
 - Server每隔60秒给客户端发送一次保活信息包给客户端
