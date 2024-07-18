@@ -1,0 +1,7 @@
+# SSH private key format
+-----BEGIN OPENSSH PRIVATE KEY-----
+<base64 content>
+-----END OPENSSH PRIVATE KEY-----
+
+# SSH public key format
+ssh-ed25519 <content> <commonce>
