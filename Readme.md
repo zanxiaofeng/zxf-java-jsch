@@ -31,4 +31,16 @@
 - Client 端发出的请求服务端没有回应的次数达到86400次的时候就断开连接，正常情况下服务端都会响应
 - ServerAliveCountMax 86400
 
+# SSH Client-Server trust
+## Server authentication
+- /etc/ssh/known_hosts
+- ~/.ssh/known_hosts
+## User authentication
+- username/password
+- ~/.ssh/authorized_keys
+
 # How Jsch process un-know hosts
+- Session::setConfig("StrictHostKeyChecking", "no");
+- com.jcraft.jsch.HostKey
+- com.jcraft.jsch.HostKeyRepository
+- com.jcraft.jsch.KnownHosts
