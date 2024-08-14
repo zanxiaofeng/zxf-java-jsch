@@ -41,7 +41,7 @@ public class MySftpTests {
             mySftp3.ls(".").forEach(System.out::println);
             System.out.println(Thread.currentThread() + " ############################");
             mySftp3.ls("/upload").forEach(System.out::println);
-            mySftp3.upload("/upload/hello.txt", "Hello".getBytes(StandardCharsets.UTF_8));
+            mySftp3.upload("/upload/hello.txt", "Hello".getBytes(StandardCharsets.UTF_8), 0666);
         } catch (Exception ex) {
             ex.printStackTrace();
             mySftpPool.invalidateObject(mySftp3);

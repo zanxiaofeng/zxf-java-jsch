@@ -9,6 +9,8 @@ import lombok.Data;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.security.Permission;
+import java.security.Permissions;
 import java.util.Vector;
 
 @Data
@@ -34,19 +36,21 @@ public class MySftp {
         }
     }
 
-    public void createFolder(String folder) throws SftpException, JSchException {
+    public void createFolder(String folder, int permissions) throws SftpException, JSchException {
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
             channelSftp.mkdir(folder);
+            channelSftp.chmod(permissions, folder);
         } finally {
             channelSftp.disconnect();
         }
     }
 
-    public void upload(String dst, byte[] content) throws SftpException, JSchException {
+    public void upload(String dst, byte[] content, int permissions) throws SftpException, JSchException {
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
             channelSftp.put(new ByteArrayInputStream(content), dst);
+            channelSftp.chmod(permissions, dst);
         } finally {
             channelSftp.disconnect();
         }
