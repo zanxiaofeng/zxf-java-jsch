@@ -44,3 +44,15 @@
 - com.jcraft.jsch.HostKey
 - com.jcraft.jsch.HostKeyRepository
 - com.jcraft.jsch.KnownHosts
+
+# int chown(const char *pathname, uid_t owner, gid_t group)
+- These system calls change the owner and group of a file.
+- Only a privileged process (Linux: one with the CAP_CHOWN capability) may change the owner of a file.  The owner of a file may change the group of the file to any group of which that owner is a member.  A privileged process (Linux: with CAP_CHOWN) may change the group arbitrarily.
+- If the owner or group is specified as -1, then that ID is not changed.
+
+# Ownership of new files
+- When a new file is created (by, for example, open(2) or mkdir(2)), its owner is made the same as the filesystem user ID of the creating process.  The group of the file depends on a range of factors, including the type of filesystem, the options used to mount the filesystem, and whether or not the set-group-ID mode bit is enabled on the parent directory.  If the filesystem supports the -o grpid (or, synonymously -o bsdgroups) and -o nogrpid (or, synonymously -o sysvgroups) mount(8) options, then the rules are as follows:
+- If the filesystem is mounted with -o grpid, then the group of a new file is made the same as that of the parent directory.
+- If the filesystem is mounted with -o nogrpid and the set- group-ID bit is disabled on the parent directory, then the group of a new file is made the same as the process's filesystem GID.
+- If the filesystem is mounted with -o nogrpid and the set- group-ID bit is enabled on the parent directory, then the group of a new file is made the same as that of the parent directory.
+- As at Linux 4.12, the -o grpid and -o nogrpid mount options are supported by ext2, ext3, ext4, and XFS.  Filesystems that don't support these mount options follow the -o nogrpid rules.
