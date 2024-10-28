@@ -39,6 +39,9 @@
 - username/password
 - ~/.ssh/authorized_keys
 
+# sftp command
+- `sftp -vvvv -o StrictHostKeyChecking=no -o IdentityFile=/path/to/id_rsa sftpuser@sftp.host`
+
 # How Jsch process un-know hosts
 - Session::setConfig("StrictHostKeyChecking", "no");
 - com.jcraft.jsch.HostKey
