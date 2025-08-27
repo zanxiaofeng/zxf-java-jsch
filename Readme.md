@@ -39,6 +39,21 @@
 - username/password
 - ~/.ssh/authorized_keys
 
+# Core setting of SSH Client & Server
+## SSH Client
+- /etc/ssh/ssh_config
+- /home/<user>/.ssh/known_hosts
+- /home/<user>/.ssh/id_rsa & id_rsa.pub
+- /home/<user>/.ssh/id_dsa & id_dsa.pub
+- /home/<user>/.ssh/id_ecdsa & id_ecdsa.pub
+## SSH Server
+- /etc/ssh/sshd_config
+- /etc/ssh/ssh_host_key & ssh_host_key.pub
+- /etc/ssh/ssh_host_rsa_key & ssh_host_rsa_key.pub
+- /etc/ssh/ssh_host_dsa_key & ssh_host_dsa_key.pub
+- /etc/ssh/ssh_host_ecdsa_key & ssh_host_ecdsa_key.pub
+- /home/<user>/.ssh/authorized_keys
+
 # sftp command
 - `sftp -vvvv -o StrictHostKeyChecking=no -o IdentityFile=/path/to/id_rsa sftpuser@sftp.host`
 
