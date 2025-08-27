@@ -74,3 +74,7 @@
 - If the filesystem is mounted with -o nogrpid and the set- group-ID bit is disabled on the parent directory, then the group of a new file is made the same as the process's filesystem GID.
 - If the filesystem is mounted with -o nogrpid and the set- group-ID bit is enabled on the parent directory, then the group of a new file is made the same as that of the parent directory.
 - As at Linux 4.12, the -o grpid and -o nogrpid mount options are supported by ext2, ext3, ext4, and XFS.  Filesystems that don't support these mount options follow the -o nogrpid rules.
+
+# How to generate public key from private key
+- openssl rsa -in <key>.pem -pubout -outform PEM|DER|PVK -out <pubkey>.pem
+- ssh-keygen -y -f <key>.pem

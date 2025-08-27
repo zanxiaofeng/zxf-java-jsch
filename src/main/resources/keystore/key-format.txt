@@ -5,3 +5,8 @@
 
 # SSH public key format
 ssh-ed25519 <content> <commonce>
+
+# SSH2 public key format
+-----BEGIN SSH2 PUBLIC KEY-----
+<base64 content>
+-----END SSH2 PUBLIC KEY-----
