@@ -4,6 +4,7 @@
 -----END OPENSSH PRIVATE KEY-----
 
 # SSH public key format
+<type-name> <base64-encoded-ssh-public-key>[ <comment>]
 ssh-ed25519 <content> <commonce>
 
 # SSH2 public key format
