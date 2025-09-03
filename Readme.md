@@ -76,5 +76,5 @@
 - As at Linux 4.12, the -o grpid and -o nogrpid mount options are supported by ext2, ext3, ext4, and XFS.  Filesystems that don't support these mount options follow the -o nogrpid rules.
 
 # How to generate public key from private key
-- openssl rsa -in <key>.pem -pubout -outform PEM|DER|PVK -out <pubkey>.pem
-- ssh-keygen -y -f <key>.pem
+- `openssl rsa -in <key>.pem -pubout -outform PEM|DER|PVK -out <pubkey>.pem`
+- `ssh-keygen -y -f <key>.pem`
