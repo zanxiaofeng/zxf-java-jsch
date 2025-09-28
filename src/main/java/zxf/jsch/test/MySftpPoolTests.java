@@ -1,4 +1,4 @@
-package zxf.jsch;
+package zxf.jsch.test;
 
 import zxf.jsch.mysftp.MySftp;
 import zxf.jsch.mysftp.MySftpPool;
