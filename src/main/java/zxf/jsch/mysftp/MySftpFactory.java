@@ -9,7 +9,6 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
     private final MySftpProperties mySftpProperties;
@@ -66,7 +65,7 @@ public class MySftpFactory extends BasePooledObjectFactory<MySftp> {
 
             @Override
             public void log(int i, String s) {
-                System.out.println(Thread.currentThread() + " jsch:: " + s);
+                //System.out.println(Thread.currentThread() + " jsch:: " + s);
             }
         });
     }

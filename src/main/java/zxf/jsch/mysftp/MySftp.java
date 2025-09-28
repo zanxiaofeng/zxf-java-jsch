@@ -9,8 +9,6 @@ import lombok.Data;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.security.Permission;
-import java.security.Permissions;
 import java.util.Vector;
 
 @Data
@@ -84,7 +82,6 @@ public class MySftp {
             session.disconnect();
         }
     }
-
 
     private ChannelSftp makeChannelSftp() throws JSchException {
         System.out.println(Thread.currentThread() + " MySftp::makeChannelSftp");

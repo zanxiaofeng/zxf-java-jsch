@@ -1,9 +1,10 @@
-package zxf.jsch.mysftp;
+package zxf.jsch;
 
-import org.apache.commons.pool2.ObjectPool;
+import zxf.jsch.mysftp.MySftp;
+import zxf.jsch.mysftp.MySftpPool;
+import zxf.jsch.mysftp.MySftpProperties;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 
 public class MySftpTests {
     public static void main(String[] args) throws Exception {
@@ -53,7 +54,7 @@ public class MySftpTests {
         mySftpProperties.setHost("localhost");
         mySftpProperties.setPort(2222);
         mySftpProperties.setUsername("sftp-user");
-        mySftpProperties.setIdentityFile(Paths.get("./src/main/resources/keystore/my-sshkey").toString());
+        mySftpProperties.setIdentityFile("./src/main/resources/keystore/my-sshkey");
         mySftpProperties.setBasePath("/");
         mySftpProperties.setTimeout(3000);
         mySftpProperties.setServerAliveInterval(120);
