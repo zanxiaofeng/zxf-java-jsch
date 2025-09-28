@@ -17,8 +17,10 @@ import java.util.Vector;
 @AllArgsConstructor
 public class MySftp {
     private final Session session;
+    private final String basePath;
 
     public void cd(String folder) throws SftpException, JSchException {
+        System.out.println(Thread.currentThread() + " MySftp::cd, " + folder);
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
             channelSftp.cd(folder);
@@ -27,56 +29,62 @@ public class MySftp {
         }
     }
 
-    public Vector ls(String path) throws SftpException, JSchException {
+    public Vector list(String path) throws SftpException, JSchException {
+        System.out.println(Thread.currentThread() + " MySftp::list, " + basePath + path);
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
-            return channelSftp.ls(path);
+            return channelSftp.ls(basePath + path);
         } finally {
             channelSftp.disconnect();
         }
     }
 
     public void createFolder(String folder, int permissions) throws SftpException, JSchException {
+        System.out.println(Thread.currentThread() + " MySftp::createFolder, " + basePath + folder);
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
-            channelSftp.mkdir(folder);
-            channelSftp.chmod(permissions, folder);
+            channelSftp.mkdir(basePath + folder);
+            channelSftp.chmod(permissions, basePath + folder);
         } finally {
             channelSftp.disconnect();
         }
     }
 
     public void upload(String dst, byte[] content, int permissions) throws SftpException, JSchException {
+        System.out.println(Thread.currentThread() + " MySftp::upload, " + basePath + dst);
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
-            channelSftp.put(new ByteArrayInputStream(content), dst);
-            channelSftp.chmod(permissions, dst);
+            channelSftp.put(new ByteArrayInputStream(content), basePath + dst);
+            channelSftp.chmod(permissions, basePath + dst);
         } finally {
             channelSftp.disconnect();
         }
     }
 
     public byte[] download(String src) throws SftpException, JSchException {
+        System.out.println(Thread.currentThread() + " MySftp::download, " + basePath + src);
         ChannelSftp channelSftp = this.makeChannelSftp();
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            channelSftp.get(src, outputStream);
+            channelSftp.get(basePath + src, outputStream);
             return outputStream.toByteArray();
         } finally {
             channelSftp.disconnect();
         }
     }
 
-    public void disconnect() {
+    public boolean isConnected() {
+        System.out.println(Thread.currentThread() + " MySftp::isConnected");
+        return session.isConnected();
+    }
+
+    protected void disconnect() {
         System.out.println(Thread.currentThread() + " MySftp::disconnect");
         if (session.isConnected()) {
             session.disconnect();
         }
     }
 
-    public boolean isConnected() {
-        return session.isConnected();
-    }
 
     private ChannelSftp makeChannelSftp() throws JSchException {
         System.out.println(Thread.currentThread() + " MySftp::makeChannelSftp");

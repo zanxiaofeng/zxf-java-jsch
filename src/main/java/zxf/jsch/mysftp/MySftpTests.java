@@ -7,56 +7,62 @@ import java.nio.file.Paths;
 
 public class MySftpTests {
     public static void main(String[] args) throws Exception {
-        ObjectPool<MySftp> mySftpPool = MySftpPoolFactory.createPool("sftp-user", Paths.get("./src/main/resources/keystore/my-sshkey"), "localhost", 2222);
+        MySftpPool mySftpPool = new MySftpPool(createMySftpProperties());
 
-        MySftp mySftp1 = mySftpPool.borrowObject();
+        MySftp mySftp1 = mySftpPool.getMySftp();
         try {
             System.out.println(Thread.currentThread() + " 111~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            mySftp1.ls("/upload").forEach(System.out::println);
+            mySftp1.list("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             ex.printStackTrace();
-            mySftpPool.invalidateObject(mySftp1);
-            mySftp1 = null;
         } finally {
-            if (mySftp1 != null) {
-                mySftpPool.returnObject(mySftp1);
-            }
+            mySftpPool.releaseMySftp(mySftp1);
         }
 
-        MySftp mySftp2 = mySftpPool.borrowObject();
+        MySftp mySftp2 = mySftpPool.getMySftp();
         try {
             System.out.println(Thread.currentThread() + " 222~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            mySftp2.ls(".").forEach(System.out::println);
+            mySftp2.list(".").forEach(System.out::println);
             System.out.println(Thread.currentThread() + " ############################");
-            mySftp2.ls("/upload").forEach(System.out::println);
+            mySftp2.list("/upload").forEach(System.out::println);
         } catch (Exception ex) {
             ex.printStackTrace();
-            mySftpPool.invalidateObject(mySftp2);
-            mySftp2 = null;
+        } finally {
+            mySftpPool.releaseMySftp(mySftp2);
         }
 
-        MySftp mySftp3 = mySftpPool.borrowObject();
+        MySftp mySftp3 = mySftpPool.getMySftp();
         try {
             System.out.println(Thread.currentThread() + " 333~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            mySftp3.ls(".").forEach(System.out::println);
+            mySftp3.list(".").forEach(System.out::println);
             System.out.println(Thread.currentThread() + " ############################");
-            mySftp3.ls("/upload").forEach(System.out::println);
+            mySftp3.list("/upload").forEach(System.out::println);
             mySftp3.upload("/upload/hello.txt", "Hello".getBytes(StandardCharsets.UTF_8), 0666);
         } catch (Exception ex) {
             ex.printStackTrace();
-            mySftpPool.invalidateObject(mySftp3);
-            mySftp3 = null;
+        } finally {
+            mySftpPool.releaseMySftp(mySftp3);
         }
 
-        if (mySftp2 != null) {
-            mySftpPool.returnObject(mySftp2);
-        }
-
-        if (mySftp3 != null) {
-            mySftpPool.returnObject(mySftp3);
-        }
-
-        mySftpPool.close();
+        mySftpPool.shutdown();
         System.out.println(Thread.currentThread() + " ---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    }
+
+    private static MySftpProperties createMySftpProperties() {
+        MySftpProperties mySftpProperties = new MySftpProperties();
+        mySftpProperties.setHost("localhost");
+        mySftpProperties.setPort(2222);
+        mySftpProperties.setUsername("sftp-user");
+        mySftpProperties.setIdentityFile(Paths.get("./src/main/resources/keystore/my-sshkey").toString());
+        mySftpProperties.setBasePath("/");
+        mySftpProperties.setTimeout(3000);
+        mySftpProperties.setServerAliveInterval(120);
+        mySftpProperties.getPool().setMaxTotal(20);
+        mySftpProperties.getPool().setMaxIdle(2);
+        mySftpProperties.getPool().setMinIdle(1);
+        mySftpProperties.getPool().setTestOnBorrow(true);
+        mySftpProperties.getPool().setTestWhileIdle(true);
+        mySftpProperties.getPool().setMaxWaitMillis(30000);
+        return mySftpProperties;
     }
 }
