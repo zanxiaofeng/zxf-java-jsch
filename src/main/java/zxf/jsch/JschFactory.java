@@ -29,7 +29,21 @@ public class JschFactory {
         });
     }
 
-    public static Session createSession(String username, String passwd, String host, int port) throws Exception {
+    /**
+     * Create SSH session with password authentication.
+     *
+     * @param username SSH username
+     * @param passwd   Password as char[] (not String) for better security:
+     *                 - char[] can be cleared after use to remove sensitive data from memory
+     *                 - String is immutable and remains in heap until garbage collected
+     *                 - char[] won't be interned in the string pool
+     *                 - char[] won't appear in heap dumps as easily as String
+     * @param host     SSH server host
+     * @param port     SSH server port
+     * @return Connected Session
+     * @throws Exception if connection fails
+     */
+    public static Session createSession(String username, char[] passwd, String host, int port) throws Exception {
         System.out.println(Thread.currentThread() + " JschFactory::createSession");
         JSch jSch = new JSch();
         Session session = jSch.getSession(username, host, port);
@@ -39,6 +53,13 @@ public class JschFactory {
         session.setServerAliveInterval(120);
         session.setTimeout(3000);
         session.connect();
+        // Clear password from memory after use to prevent sensitive data leakage
+        // This is a security best practice for handling passwords in memory
+        if (passwd != null) {
+            for (int i = 0; i < passwd.length; i++) {
+                passwd[i] = '\0';
+            }
+        }
         return session;
     }
 

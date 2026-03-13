@@ -16,7 +16,7 @@ public class JschSftpTests {
 
     private static void testUsernameAndPassword() throws Exception {
         System.out.println(Thread.currentThread() + " *****************************testUsernameAndPassword*****************************");
-        Session session = JschFactory.createSession("sftp-user", "passwd", "localhost", 2222);
+        Session session = JschFactory.createSession("sftp-user", "passwd".toCharArray(), "localhost", 2222);
         ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
         channelSftp.connect();
         channelSftp.put(new ByteArrayInputStream("Hello 1".getBytes()), "/upload/hello-test1.txt");

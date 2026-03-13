@@ -13,7 +13,7 @@ public class JschExecTests {
 
     private static void testUsernameAndPassword() throws Exception {
         System.out.println(Thread.currentThread() + " *****************************testUsernameAndPassword*****************************");
-        Session session = JschFactory.createSession("sftp-user", "passwd", "localhost", 2222);
+        Session session = JschFactory.createSession("sftp-user", "passwd".toCharArray(), "localhost", 2222);
         ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
         channelExec.setOutputStream(System.out, true);
         channelExec.setCommand("cat /proc/version");
